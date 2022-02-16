@@ -8,7 +8,6 @@ pipeline{
             }
             steps{
                    sh "mvn clean install -DskipTests"
-               }
             }
         }
         stage("Dev-Unit test"){
