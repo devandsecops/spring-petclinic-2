@@ -2,31 +2,23 @@
 pipeline{
     agent any
 
-    tools {
-        jdk 'jdk-8'
-        maven 'maven-3.8'
-        // tool we configured in jenkins we are providing there name here
-    }
-    
     stages{
-        stage("build"){
+        stage("Build"){
             when {
                 branch 'develop'    
             }
             steps{
-               withMaven (maven:'maven-3.8') {
+              {
                    sh "mvn clean install -DskipTests"
-                   // we package the artifact jar of our java project and skip all the test with maven goal "maven clean install -DskipTests"
                }
             }
         }
-        stage("Unit test"){
+        stage("Unit Tests"){
             when {
                 branch 'develop'   
             }
             steps{
                sh "mvn test"
-               // here we perform all unit test cases
             }
         }
         stage("Integration test"){
@@ -35,7 +27,6 @@ pipeline{
             }
             steps{
                sh "mvn verify -DskipUnitTests"
-               // here we perform all integration test with maven goal "mvn verify -DskipUnitTests" and skip again all unit test cases
 
             }
         }
@@ -45,7 +36,6 @@ pipeline{
             }
             steps {
                 sh "mvn checkstyle:checkstyle"
-                // here we perform the checkstyle static code analysis with maven goal "mvn checkstyle:checkstyle"
             }
             post {
                 success {
